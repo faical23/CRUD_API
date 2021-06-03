@@ -7,6 +7,7 @@ const TableContentHeader = () => {
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
+                <th>Client ID</th>
                 <th>Actions</th>
             </tr>
         </table>
@@ -17,9 +18,22 @@ const TableContentBody = data => {
         `   <tr class="users_row">
                 <td>${data.first_name}</td>
                 <td>${data.last_name}</td>
-                <td>${data.number}</td>
                 <td>${data.email}</td>
-                <td><button class="read" onclick = 'read(6)'>Read</button><button>Update</button><button>Delete</button></td>
+                <td>${data.number}</td>
+                <td>${data.id}</td>
+                <td>
+                    <button class="read" value='${data.id}' onlick="read_data()">read</button>
+                    <button>Update</button>
+                    <button>Delete</button>
+                </td>
             </tr>
         `
+}
+const UserData = data => {
+    document.querySelector('.user_data').innerHTML = /*html*/
+        `
+        <h1>${data.first_name}</h1>
+        <h1>${data.last_name}</h1>
+        `
+
 }

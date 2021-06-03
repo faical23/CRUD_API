@@ -9,3 +9,4 @@ $dsn = "mysql:host={$dbhost};dbname={$dbname}";
         } catch(Exception $e) {
              echo "Connection failed: " . $e->getMessage();
         }
+?>

@@ -5,7 +5,7 @@ class CRUD{
         include '../connexion.php';
 
         if($search == "search")
-            $sql = "SELECT * FROM user_account WHERE Fname LIKE '$Fname%'";
+            $sql = "SELECT * FROM user_account WHERE 	ID_client  LIKE '$Fname%'";
         else 
             $sql = "SELECT * FROM user_account";
 
@@ -20,7 +20,7 @@ class CRUD{
                                     "last_name" => $value['Lname']
                                     ,"email" => $value['Email'] ,
                                     "number" => $value['PhoneNumber']
-                                    , "client_id " => $value['ID_client']);
+                                    , "id" => $value['ID_client']);
                     array_push($arr_post['users'],$article);
                 }
         }
@@ -77,7 +77,7 @@ function http_methodes($methode){
             $get_Json = get_Json();
             if($get_Json != 'Bad JSON'){
                 if($get_Json != "Empty"){
-                    $Fname = $get_Json['Fname']; // if not empty get id from this arrays
+                    $Fname = $get_Json['id']; // if not empty get id from this arrays
                     $resultat = $get_users->get_user("search",$Fname);
                 }
                 else{

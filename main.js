@@ -4,7 +4,9 @@ let fname = document.querySelector('Fname')
 let Lname = document.querySelector('Lname')
 let Email = document.querySelector('Email')
 let PhoneNumber = document.querySelector('PhoneNumber')
-var data = {}
+var data = {
+
+}
 let param = JSON.stringify(data)
 
 function update_Rows() {
@@ -16,27 +18,41 @@ function update_Rows() {
 
 
 function fetch_functions(param) {
-    fetch('http://localhost/Create_API_PHP/api/Api_All_users.php', {
+    fetch('http://localhost/CRUD_API/api/Api_All_users.php', {
         method: 'POST',
-        body: param,
         headers: {
             'Content-type': 'application/json'
-        }
+        },
+        body: param
     }).then((response) => {
         return response.json()
     }).then((res) => {
-        console.log(res)
+        // console.log(res)
         update_Rows();
         TableContentHeader();
         for (let i = 0; i < res.data.users.length; i++) {
             TableContentBody(res.data.users[i]);
         }
+        read_user(res);
     })
+
 }
 fetch_functions(param);
 
 
 
+
+//// read button
+function read_user(res) {
+    let read = document.querySelectorAll('.read')
+    read.forEach(Element => {
+        Element.addEventListener('click', () => {
+            var data = { id: Element.value }
+            fetch_functions(JSON.stringify(data))
+            console.log(res.data.users)
+        })
+    })
+}
 
 
 //// search
@@ -47,28 +63,3 @@ search.addEventListener('keyup', () => {
     var data = { Fname: Search_Value }
     fetch_functions(JSON.stringify(data))
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//// saerch funtion
-// const Search_users = user_name => {
-//     var data = { Fname: user_name }
-//     fetch_functions(JSON.stringify(data))
-
-// }
