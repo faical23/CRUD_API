@@ -22,7 +22,7 @@ const TableContentBody = data => {
                 <td>${data.number}</td>
                 <td>${data.id}</td>
                 <td>
-                    <button class="read" value='${data.id}' onlick="read_data()">read</button>
+                    <button class="read" value='${data.id}' onlick="read_data()">Read</button>
                     <button>Update</button>
                     <button>Delete</button>
                 </td>
@@ -35,5 +35,4 @@ const UserData = data => {
         <h1>${data.first_name}</h1>
         <h1>${data.last_name}</h1>
         `
-
 }

@@ -1,0 +1,66 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table button {
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: none;
+    background: black;
+    color: white;
+    margin: 0px 10px;
+    cursor: pointer;
+}
+
+td,
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+input {
+    display: block;
+    display: block;
+    margin: 17px 0px;
+    width: 80%;
+    height: 35px;
+    border-radius: 31px;
+    border: 1px solid black;
+    margin: 15px auto;
+    outline: none;
+    padding-left: 20px;
+}
+
+.add_user button {
+    width: 80%;
+    padding: 12px 0px;
+    border-radius: 20px;
+    border: none;
+    background: black;
+    color: white;
+    cursor: pointer;
+}
+
+.add_user {
+    border: 1px solid black;
+    width: 33%;
+    padding: 20px;
+    border-radius: 20px;
+    margin: auto;
+    margin-top: 50px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+button:hover {
+    background: white;
+    color: black;
+    border: 1px solid black;
+}
