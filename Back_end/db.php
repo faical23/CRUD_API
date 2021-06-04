@@ -78,7 +78,7 @@ include "connect.php";
             return $e->getMessage();
         }
     }
-    public function delete($condition , $where_id){
+    public function delete($where_id,$condition){
 
         $sql = "DELETE from $this->table WHERE $where_id = '$condition' ";
         echo $sql;
@@ -93,7 +93,7 @@ include "connect.php";
 
 
     }
-    public function update($element = [],$condition,$id){
+    public function update($element = [],$id,$condition){
             $i = 0;
             $sql = "UPDATE $this->table SET ";
             $elment_length =  count($element) -1 ;

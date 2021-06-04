@@ -1,5 +1,14 @@
+form();
 var data = {}
 let param = JSON.stringify(data)
+//// htttp methodes
+let GET = "GET";
+let post = "POST";
+let PUT = "PUT";
+let DELETE = "DELETE";
+
+/// my api URL
+let Url= "http://localhost/CRUD_API/Back_end/api/Api.php/";
 
 function update_Rows() {
     let all_row = document.querySelectorAll('.users_row')
@@ -8,9 +17,10 @@ function update_Rows() {
     })
 }
 
-//// get all users 
+
+//// fetch all users and showed
 function fetch_users(param) {
-    fetch('http://localhost/CRUD_API/Back_end/api/Api.php', {
+    fetch(`${Url+GET}`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json'
@@ -28,22 +38,25 @@ function fetch_users(param) {
             TableContentBody(res.data.users[i]);
         }
         read_user(); /// to get all btn after get users data
+        Delete_user();
+        Update_user();
     })
 }
 fetch_users(param);
 
 //// search users 
-let search = document.querySelector('.search')
-search.addEventListener('keyup', () => {
+document.querySelector('.search').addEventListener('keyup', () => {
+    let search = document.querySelector('.search');
     update_Rows();
     let Search_Value = search.value
     var data = { Fname: Search_Value }
     fetch_users(JSON.stringify(data))
 })
 
-//// fetch data user if click read btn
-function fetch_methode(param) {
-    fetch('http://localhost/CRUD_API/Back_end/api/Api.php', {
+
+//// make fetch data user if click read btn
+const  Read = (param) => {
+    fetch(`${Url+GET}`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json'
@@ -53,21 +66,92 @@ function fetch_methode(param) {
         return response.json()
     }).then((res) => {
         let user = res.data.users[0]
-            // console.log(res.data.users[0].first_name);
-            // console.log(user.last_name);
         UserData(user);
     })
 }
 //// read button
-
 const read_user = () => {
-    let read = document.querySelectorAll('.read')
-    console.log(read)
-    read.forEach(Element => {
+        let read = document.querySelectorAll('.read')
+        read.forEach(Element => {
+            Element.addEventListener('click', () => {
+                var data = { ID_client: Element.value }
+                console.log(Element.value)
+                Read(JSON.stringify(data));
+            })
+        })
+    }
+    
+    
+  // make fetch with methode POST / PUT / DELETE
+  const Methode = (param,action) =>{
+    fetch(`${Url+action}`, {
+        method: action,
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: param
+    }).then((response) => {
+        return response.json()
+    }).then((res) => {
+        console.log(res)
+    })
+  }
+
+    
+    
+//// add user
+document.querySelector('.AddBtnInput').addEventListener('click' , () =>{
+    let Fname = document.querySelector('.FnameInput').value
+    let Lname = document.querySelector('.LnameInput').value
+    let Email = document.querySelector('.EmailInput').value
+    let PhoneNumber = document.querySelector('.PhoneNumberInput').value
+    var data = { Fname: Fname ,
+                Lname: Lname,
+                Email: Email,
+                PhoneNumber: PhoneNumber,
+                ID_client : "22"
+
+             }
+     Methode(JSON.stringify(data),"POST");
+})
+
+//// delete user
+const Delete_user = () => {
+    let Delete = document.querySelectorAll('.Delete')
+    Delete.forEach(Element => {
         Element.addEventListener('click', () => {
-            var data = { id: Element.value }
+            var data = { ID_client: Element.value }
             console.log(Element.value)
-            fetch_methode(JSON.stringify(data));
+            Methode(JSON.stringify(data),"DELETE");
         })
     })
+}
+
+const Update_user =() =>{
+    let rows = document.querySelectorAll('.users_row')
+    rows.forEach(Element =>{
+        let Update = Element.querySelector('.Update');
+        Update.addEventListener('click',() =>{
+            document.querySelector('.FnameInput').value = Element.querySelector('.Fname').innerHTML 
+            document.querySelector('.LnameInput').value = Element.querySelector('.Lname').innerHTML
+            document.querySelector('.EmailInput').value = Element.querySelector('.Email').innerHTML
+            document.querySelector('.PhoneNumberInput').value = Element.querySelector('.PhoneNumber').innerHTML
+            document.querySelector('.PhoneNumberInput').value = Element.querySelector('.PhoneNumber').innerHTML
+            document.querySelector('.AddBtnInput').style="display:none"
+            document.querySelector('.UpdateBtnInput').style="display:block"
+
+            document.querySelector('.UpdateBtnInput').addEventListener('click' , () =>{
+                var data = { 
+                Fname: Element.querySelector('.Fname').innerHTML ,
+                Lname: Element.querySelector('.Lname').innerHTML ,
+                Email: Element.querySelector('.Email').innerHTML ,
+                PhoneNumber: Element.querySelector('.PhoneNumber').innerHTML ,
+                ID_client: Element.querySelector('.ID_client').innerHTML 
+                }
+                console.log(data.ID_client)
+                Methode(JSON.stringify(data),"PUT");            
+            })
+        })
+    })
+
 }
