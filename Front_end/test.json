@@ -1,0 +1,38 @@
+{
+    "pack": [{
+            "pack_name": "Istanbul",
+            "path_img": "assets/img/pack/istanbul.jpg",
+            "apr": "+80%",
+            "apr_number": 80
+        },
+        {
+
+            "pack_name": "Chafchaouin",
+            "path_img": "assets/img/pack/chefchaouin.jpg",
+            "apr": "+36%",
+            "apr_number": 36
+        },
+        {
+
+            "pack_name": "Madrid",
+            "path_img": "assets/img/pack/madrir.jpg",
+            "apr": "+66%",
+            "apr_number": 66
+        },
+        {
+
+            "pack_name": "Paris",
+            "path_img": "assets/img/pack/paris.jpg",
+            "apr": "+50%",
+            "apr_number": 50
+        },
+        {
+
+            "pack_name": "Ryo",
+            "path_img": "assets/img/pack/ryo.jpg",
+            "apr": "+20%",
+            "apr_number": 20
+        }
+
+    ]
+}

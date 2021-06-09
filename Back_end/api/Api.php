@@ -1,94 +1,71 @@
 <?php
 
 include '../db.php';
+/////////// VESRION 3
 
-$link = $_SERVER['PHP_SELF'];
-$link_array = explode('/',$link); /// break the link by / and posted inside array
-$methode_use = end($link_array); //// get the last index in arrays
 
-function methode($methode){
-    // $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+
+
+
+class API{
+
+    function get(){
+                $get_users = new CRUD("clients");
+                $url = parse_url($_SERVER['REQUEST_URI']);
+                if(isset($url['query'])){
+                    $params =  explode("=",$url['query']);
+                    $condition =[$params[0] =>  $params[1]];
+                    $resultat = $get_users->select("" ,$condition);
+                }else{
+                    $resultat = $get_users->select();
+                }
+                return $resultat;
+    } 
+
+}
+
+function Data($res){
+    $arr_post['users'] = array();
+    foreach($res  as $value){
+    $article = array("FirstName" => $value['Fname'],
+                "LastName" => $value['Lname'],
+                "TotalPrix" => $value['Total_Prix'],
+                "IdClient" => $value['ID_client']);
+                array_push($arr_post['users'],$article);
+    }
+     return $arr_post['users'];
+}
+
+
+function Api($contentType,$method){
+    $get_users = new API();
     $response = [
         'value' => 0,
         'error' => 'All good',
         'data' => null,
     ];
-    $contentType = 'application/json';
-    if ($contentType === 'application/json') {
-        $get_users = new CRUD("user_account");
-        $arr_post['users'] = array();
-        $content = file_get_contents('php://input'); //// get params centent body from fetch js
-        $decoded = json_decode($content, true); //// convert this params to arrays or varaibles
-        if($methode == 'GET'){
-            if (is_array($decoded)){
-                if($decoded !== []){ 
-                    reset($decoded); /// get the first key of arrays
-                    $first_key = key($decoded); /// stock this key in variable
-                    $condition = [$first_key =>$decoded[$first_key]]; // arrays assosiative with search key and values value search
-                    $resultat = $get_users->select("" ,$condition);
-                    foreach($resultat  as $value){
-                        $article =array("first_name" => $value['Fname'] ,
-                                        "last_name" => $value['Lname']
-                                        ,"email" => $value['Email'] ,
-                                        "number" => $value['PhoneNumber']
-                                        , "id" => $value['ID_client']);
-                        array_push($arr_post['users'],$article);
-                    }         
-                }
-                else {
-                    $resultat = $get_users->select();
-                    foreach($resultat  as $value){
-                        $article =array("first_name" => $value['Fname'] ,
-                                        "last_name" => $value['Lname']
-                                        ,"email" => $value['Email'] ,
-                                        "number" => $value['PhoneNumber']
-                                        , "id" => $value['ID_client']);
-                        array_push($arr_post['users'],$article);
-                    }
-                }
-            }
-            else{
-                $response['error'] = 'Bad JSON';
-            }
-        }   
-        else if($methode == 'POST'){
-            try{
-                $get_users->insert($decoded);
-            }
-            catch(Exception $e) {
-                echo "Connection failed: " . $e->getMessage();
-            }
-
-            // methode("GET");
-            // exit();
-        }
-        else if($methode == 'PUT'){
-            try{
-                $get_users->update($decoded,"ID_client",$decoded['ID_client']);
-            }
-            catch(Exception $e) {
-                echo "Connection failed: " . $e->getMessage();
-            }
-            /// some code here
-        }
-        else if($methode == 'DELETE'){
-            reset($decoded); /// get the first key of arrays
-            $first_key = key($decoded); /// stock this key in variable
-            $resultat = $get_users->delete($first_key,$decoded[$first_key]);
-
-        }
-        $response['data'] = $arr_post ;
-        $response['value'] = 1;
-        $response['error'] = null;
-    } else {
-        $response['error'] = 'Content type is not "application/json"';
+    if($contentType ==='application/json'){
+        $data = $get_users->$method();
+        $response['data'] = Data($data);
+    }
+    else{
+        $response['error'] = "Content is not Json Data";
     }
     
-     echo json_encode($response);
+    echo json_encode($response);
 }
 
 
-methode($methode_use);
+
+
+
+$method = strtolower($_SERVER["REQUEST_METHOD"]);
+$contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+$params = json_decode(file_get_contents('php://input'),true);
+// $api = new API($method,$contentType,$params,$contentType);
+// $res = $api->$method();
+
+Api($contentType,$method);
 
 
 
@@ -111,3 +88,198 @@ methode($methode_use);
 
 
 
+
+
+
+
+    // function hh(){
+    //     $get_users = new CRUD("clients");
+    //     $url = parse_url($_SERVER['REQUEST_URI']);
+    //     if(isset($url['query'])){
+    //         $params =  explode("=",$url['query']);
+    //         $condition =[$params[0] =>  $params[1]];
+    //         $resultat = $get_users->select("" ,$condition);
+    //         $response['data'] = test($resultat);
+    //     }else{
+    //         $resultat = $get_users->select();
+    //         test($resultat);
+    //         $response['data'] = test($resultat);
+
+    //     }
+    // }
+
+
+
+
+
+
+
+
+// function get(){
+//     $response = [
+//         'value' => 0,
+//         'error' => 'All good',
+//         'data' => null,
+//     ];
+//         $get_users = new CRUD("clients");
+//         function test($res){
+//             $arr_post['users'] = array();
+//             foreach($res  as $value){
+//                     $article = array("First Name" => $value['Fname'],
+//                                     "Last Name" => $value['Lname'],
+//                                     "Total_Prix" => $value['Total_Prix'],
+//                                     "Id_Client" => $value['ID_client']);
+//                     array_push($arr_post['users'],$article);
+//             }
+//             return $arr_post['users'];
+//          }
+
+//         if($this->contentType === 'application/json'){
+
+//             $url = parse_url($_SERVER['REQUEST_URI']);
+//             if(isset($url['query'])){
+//                 $params =  explode("=",$url['query']);
+//                 $condition =[$params[0] =>  $params[1]];
+//                 $resultat = $get_users->select("" ,$condition);
+//                 $response['data'] = test($resultat);
+//             }else{
+//                 $resultat = $get_users->select();
+//                 test($resultat);
+//                 $response['data'] = test($resultat);
+
+//             }
+//         $response['value'] = 1;
+//         echo json_encode($response);
+//     }
+// } 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // function geet(){
+    //     $get_users = new CRUD("clients");
+    //     $arr_post['users'] = array();
+    //     $response = [
+    //         'value' => 0,
+    //         'error' => 'All good',
+    //         'data' => null,
+    //     ];
+    //     $resultat = $get_users->select();
+    //     foreach($resultat  as $value){
+    //         $article = array("First Name" => $value['Fname'],
+    //                         "Last Name" => $value['Lname'],
+    //                         "Total_Prix" => $value['Total_Prix'],
+    //                         "Id_Client" => $value['ID_client']);
+    //         array_push($arr_post['users'],$article);
+    //     }
+    //     $response['data'] = $arr_post['users'];
+    //     $response['value'] = 1;
+    //     echo json_encode($response);
+    // }
+
+
+
+
+
+
+
+
+
+
+
+                    //     if(isset($_GET['Fname'])){
+
+                    //     $condition =["Fname" => $_GET['Fname']];
+                    //     $resultat = $get_users->select("" ,$condition);
+                    //     foreach($resultat  as $value){
+                    //         $article = array("First Name" => $value['Fname'],
+                    //                         "Last Name" => $value['Lname'],
+                    //                         "Total_Prix" => $value['Total_Prix'],
+                    //                         "Id_Client" => $value['ID_client']);
+                    //         array_push($arr_post['users'],$article);
+                    //     }
+                    // }
+                    // else{
+                    //     $resultat = $get_users->select();
+                    //     foreach($resultat  as $value){
+                    //         $article = array("First Name" => $value['Fname'],
+                    //                         "Last Name" => $value['Lname'],
+                    //                         "Total_Prix" => $value['Total_Prix'],
+                    //                         "Id_Client" => $value['ID_client']);
+                    //         array_push($arr_post['users'],$article);
+    
+                    //     }
+                    // }   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // $response = [
+// //     'value' => 0,
+// //     'error' => 'All good',
+// //     'data' => null,
+// // ];
+// // $params = file_get_contents('php://input');
+// // $decoded = json_decode($params , true);
+// // $response['data'] = $decoded ;
+// // $response['value'] = 1 ;
+// // echo json_encode($response)
+// // $decoded = json_decode($params , true);
+// // var_dump($decoded);
+// // reset($params);             
+// // $first_key = key($params); 
+// // echo $first_key;
+// // $condition = [$first_key => $params[$first_key]]; 
+// // var_dump($condition);

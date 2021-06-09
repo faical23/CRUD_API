@@ -5,8 +5,7 @@ const TableContentHeader = () => {
             <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
+                <th>PRIX</th>
                 <th>Client ID</th>
                 <th>Actions</th>
             </tr>
@@ -16,11 +15,10 @@ const TableContentHeader = () => {
 const TableContentBody = data => {
     document.querySelector('.table_users table').innerHTML += /*html*/
         `   <tr class="users_row">
-                <td class="Fname">${data.first_name}</td>
-                <td  class="Lname">${data.last_name}</td>
-                <td  class="Email">${data.email}</td>
-                <td  class="PhoneNumber">${data.number}</td>
-                <td  class="ID_client">${data.id}</td>
+                <td class="Fname">${data.FirstName}</td>
+                <td  class="Lname">${data.LastName}</td>
+                <td  class="Email">${data.TotalPrix}</td>
+                <td  class="PhoneNumber">${data.IdClient}</td>
                 <td>
                     <button class="read" value='${data.id}'>Read</button>
                     <button class="Update" value='${data.id}' >Update</button>

@@ -32,8 +32,6 @@ include "connect.php";
                 $i++;
         }
         $sql = "INSERT INTO $this->table ($columns) VALUES ($values_column)"; 
-        echo $sql;
-        echo "<br/>";
         try {
             $stmt = $this->dbh->prepare($sql);
             $stmt = $this->dbh->exec($sql);
@@ -81,7 +79,6 @@ include "connect.php";
     public function delete($where_id,$condition){
 
         $sql = "DELETE from $this->table WHERE $where_id = '$condition' ";
-        echo $sql;
         try{
             $stmt = $this->dbh->prepare($sql);
             $stmt->execute();
