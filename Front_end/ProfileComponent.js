@@ -20,9 +20,9 @@ const TableContentBody = data => {
                 <td  class="Email">${data.TotalPrix}</td>
                 <td  class="PhoneNumber">${data.IdClient}</td>
                 <td>
-                    <button class="read" value='${data.id}'>Read</button>
-                    <button class="Update" value='${data.id}' >Update</button>
-                    <button class="Delete" value='${data.id}' >Delete</button>
+                    <button class="read" value='${data.IdClient}'>Read</button>
+                    <button class="Update" value='${data.IdClient}' >Update</button>
+                    <button class="Delete" value='${data.IdClient}' >Delete</button>
                 </td>
             </tr>
         `
@@ -39,8 +39,8 @@ const form = () =>{
     `
        <input class='FnameInput' name="Fname" placeholder="First Name">
         <input class='LnameInput' name="Lname" placeholder="Last Name">
-        <input class='EmailInput' name="Email" placeholder="Email">
-        <input class='PhoneNumberInput' name="PhoneNumber" placeholder="PhoneNumber">
+        <input class='TotalPrix' name="TotalPrix" placeholder="TotalPrix">
+        <input class='IdClient' name="IdClient" placeholder="IdClient">
         <button class="AddBtnInput" >Add</button>
         <button class="UpdateBtnInput" style="display:none" >Update</button>
 

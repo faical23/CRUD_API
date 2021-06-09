@@ -1,31 +1,41 @@
 form();
 TableContentHeader();
 const url = "http://localhost/CRUD_API/Back_end/api/Api.php";
-let data = {};
-let params = JSON.stringify(data);
-let methode = "GET";
-
-let prop = {
-    method:methode,
-    headers: {
-        'Content-type': 'application/json'
-    }
-}
 
 
-
-function fetch_data(url, method,params){
-    fetch(url ,prop).then((response) => {return response.json()})
+function fetch_data(url,search=""){
+    fetch(`${url+search}` ,{
+        method:"GET",
+        headers: {
+            'Content-type': 'application/json'
+        }
+    }).then((response) => {return response.json()})
     .then(
         (res) => {
+            Update__Rows()
             for(let i = 0 ; i < res.data.length ; i++){
                 TableContentBody(res.data[i]);
-                console.log(res.data[i])
             }
+            Delete__user();
+            Add__user();
+            Search__user();
         })
 }
-    
-fetch_data(url,methode,params)
+function Api__Methode(url , methode,params){
+    fetch(url ,{
+        method:methode,
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(params)
+    }).then((response) => {return response.json()})
+    .then(
+        (res) => {
+            console.log(res)
+            fetch_data(url)
+    })
+}
+fetch_data(url)
 
 
 
@@ -33,6 +43,48 @@ fetch_data(url,methode,params)
 
 
 
+
+//// update rows if we use some methodes like delete or add ....
+const  Update__Rows = () => {
+    let all_row = document.querySelectorAll('.users_row')
+    all_row.forEach(Element => {
+        Element.innerHTML = "";
+    })
+}
+/// seearch users
+const Search__user = () =>{
+    document.querySelector('.search').addEventListener('keyup', ()=>{
+        let search = document.querySelector('.search').value
+        search = `?Fname=`+search;
+        fetch_data(url+search)
+    })
+}
+/// add users
+const Add__user = () =>{
+    document.querySelector('.AddBtnInput').addEventListener('click', ()=>{
+        let F__name = document.querySelector('.FnameInput').value
+        let L__name = document.querySelector('.LnameInput').value
+        let Total__Prix = document.querySelector('.TotalPrix').value
+        let Id__Client = document.querySelector('.IdClient').value
+        var Data = { Fname: F__name ,
+                    Lname: L__name,
+                    total_Prix : Total__Prix,
+                    ID_client : Id__Client
+        }
+        Api__Methode(url , "POST",Data)
+    })
+}
+// delete users
+const Delete__user = () => {
+    let Delete = document.querySelectorAll('.Delete')
+    Delete.forEach(Element => {
+        Element.addEventListener('click', () => {
+            console.log(Element.value)
+            var data = { ID_client: Element.value }
+            Api__Methode(url , "DELETE",data)
+        })
+    })
+}
 
 
 

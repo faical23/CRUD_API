@@ -3,13 +3,9 @@
 include '../db.php';
 /////////// VESRION 3
 
-
-
-
-
 class API{
 
-    function get(){
+    function get($para){
                 $get_users = new CRUD("clients");
                 $url = parse_url($_SERVER['REQUEST_URI']);
                 if(isset($url['query'])){
@@ -21,6 +17,18 @@ class API{
                 }
                 return $resultat;
     } 
+    function post($para){
+        $get_users = new CRUD("clients");
+        $get_users->insert($para);
+    }
+    function delete($param){
+        $get_users = new CRUD("clients");
+        reset($param);
+        $first_key = key($param); 
+        $where_id =$first_key;
+        $condition = $param[$first_key];
+        $get_users->delete($where_id , $condition);
+    }
 
 }
 
@@ -37,7 +45,7 @@ function Data($res){
 }
 
 
-function Api($contentType,$method){
+function Api($contentType,$method,$params){
     $get_users = new API();
     $response = [
         'value' => 0,
@@ -45,8 +53,11 @@ function Api($contentType,$method){
         'data' => null,
     ];
     if($contentType ==='application/json'){
-        $data = $get_users->$method();
-        $response['data'] = Data($data);
+        $data = $get_users->$method($params);
+        if($method == "get"){
+            $response['data'] = Data($data);
+        }
+        $response['value'] = 1;
     }
     else{
         $response['error'] = "Content is not Json Data";
@@ -62,10 +73,7 @@ function Api($contentType,$method){
 $method = strtolower($_SERVER["REQUEST_METHOD"]);
 $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
 $params = json_decode(file_get_contents('php://input'),true);
-// $api = new API($method,$contentType,$params,$contentType);
-// $res = $api->$method();
-
-Api($contentType,$method);
+Api($contentType,$method,$params);
 
 
 
