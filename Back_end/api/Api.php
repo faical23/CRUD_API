@@ -1,11 +1,9 @@
 <?php
-
 include '../db.php';
 /////////// VESRION 3
 
 class API{
-
-    function get($para){
+    function get(){
                 $get_users = new CRUD("clients");
                 $url = parse_url($_SERVER['REQUEST_URI']);
                 if(isset($url['query'])){
@@ -29,9 +27,11 @@ class API{
         $condition = $param[$first_key];
         $get_users->delete($where_id , $condition);
     }
-
+    function put($param){
+        $get_users = new CRUD("clients");
+        $get_users-> update($param,"ID_client",$param['ID_client']);
+    }
 }
-
 function Data($res){
     $arr_post['users'] = array();
     foreach($res  as $value){
@@ -43,8 +43,6 @@ function Data($res){
     }
      return $arr_post['users'];
 }
-
-
 function Api($contentType,$method,$params){
     $get_users = new API();
     $response = [
@@ -65,11 +63,6 @@ function Api($contentType,$method,$params){
     
     echo json_encode($response);
 }
-
-
-
-
-
 $method = strtolower($_SERVER["REQUEST_METHOD"]);
 $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
 $params = json_decode(file_get_contents('php://input'),true);

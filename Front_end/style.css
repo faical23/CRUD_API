@@ -57,6 +57,7 @@ input {
     margin-top: 50px;
     margin: 50px auto;
     text-align: center;
+    text-align: -webkit-center;
 }
 
 button:hover {

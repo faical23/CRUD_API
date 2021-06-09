@@ -17,8 +17,8 @@ const TableContentBody = data => {
         `   <tr class="users_row">
                 <td class="Fname">${data.FirstName}</td>
                 <td  class="Lname">${data.LastName}</td>
-                <td  class="Email">${data.TotalPrix}</td>
-                <td  class="PhoneNumber">${data.IdClient}</td>
+                <td  class="Total_Prix">${data.TotalPrix}</td>
+                <td  class="Id_Client">${data.IdClient}</td>
                 <td>
                     <button class="read" value='${data.IdClient}'>Read</button>
                     <button class="Update" value='${data.IdClient}' >Update</button>
@@ -27,21 +27,14 @@ const TableContentBody = data => {
             </tr>
         `
 }
-const UserData = data => {
-    document.querySelector('.user_data').innerHTML = /*html*/
-        `
-        <h1>${data.first_name}</h1>
-        <h1>${data.last_name}</h1>
-        `
-}
 const form = () =>{
     document.querySelector('.add_user').innerHTML += /*html */
     `
-       <input class='FnameInput' name="Fname" placeholder="First Name">
+        <input class='FnameInput' name="Fname" placeholder="First Name">
         <input class='LnameInput' name="Lname" placeholder="Last Name">
         <input class='TotalPrix' name="TotalPrix" placeholder="TotalPrix">
         <input class='IdClient' name="IdClient" placeholder="IdClient">
-        <button class="AddBtnInput" >Add</button>
+        <button class="AddBtnInput" style="display:block">Add</button>
         <button class="UpdateBtnInput" style="display:none" >Update</button>
 
     `
