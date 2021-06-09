@@ -22,6 +22,7 @@ function fetch_data(url,search=""){
             Search__user();
             change__btn_Add_Update("block","none")
         })
+    .catch((e) => console.log(e))
 }
 function Api__Methode(url , methode,params){
     fetch(url ,{
@@ -36,6 +37,7 @@ function Api__Methode(url , methode,params){
             console.log(res)
             fetch_data(url)
     })
+    .catch((e) => console.log(e))
 }
 
 fetch_data(url)

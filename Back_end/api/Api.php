@@ -3,23 +3,23 @@ include '../db.php';
 /////////// VESRION 3
 
 class API{
-    function get(){
-                $get_users = new CRUD("clients");
-                $url = parse_url($_SERVER['REQUEST_URI']);
-                if(isset($url['query'])){
-                    $params =  explode("=",$url['query']);
-                    $condition =[$params[0] =>  $params[1]];
-                    $resultat = $get_users->select("" ,$condition);
-                }else{
-                    $resultat = $get_users->select();
-                }
-                return $resultat;
+    public function get(){
+        $get_users = new CRUD("clients");
+        $url = parse_url($_SERVER['REQUEST_URI']);
+        if(isset($url['query'])){
+            $params =  explode("=",$url['query']);
+            $condition =[$params[0] =>  $params[1]];
+            $resultat = $get_users->select("" ,$condition);
+        }else{
+            $resultat = $get_users->select();
+        }
+            return $resultat;
     } 
-    function post($para){
+    public function post($para){
         $get_users = new CRUD("clients");
         $get_users->insert($para);
     }
-    function delete($param){
+    public function delete($param){
         $get_users = new CRUD("clients");
         reset($param);
         $first_key = key($param); 
@@ -27,7 +27,7 @@ class API{
         $condition = $param[$first_key];
         $get_users->delete($where_id , $condition);
     }
-    function put($param){
+    public function put($param){
         $get_users = new CRUD("clients");
         $get_users-> update($param,"ID_client",$param['ID_client']);
     }
