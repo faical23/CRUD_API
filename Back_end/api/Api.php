@@ -3,33 +3,29 @@ include '../db.php';
 /////////// VESRION 3
 
 class API{
-    public function get(){
-        $get_users = new CRUD("clients");
+    public function get($para,$get_Db){
         $url = parse_url($_SERVER['REQUEST_URI']);
         if(isset($url['query'])){
             $params =  explode("=",$url['query']);
             $condition =[$params[0] =>  $params[1]];
-            $resultat = $get_users->select("" ,$condition);
+            $resultat = $get_Db->select("" ,$condition);
         }else{
-            $resultat = $get_users->select();
+            $resultat = $get_Db->select();
         }
             return $resultat;
     } 
-    public function post($para){
-        $get_users = new CRUD("clients");
-        $get_users->insert($para);
+    public function post($para,$get_Db){
+        $get_Db->insert($para);
     }
-    public function delete($param){
-        $get_users = new CRUD("clients");
-        reset($param);
-        $first_key = key($param); 
+    public function delete($para,$get_Db){
+        reset($para);
+        $first_key = key($para); 
         $where_id =$first_key;
-        $condition = $param[$first_key];
-        $get_users->delete($where_id , $condition);
+        $condition = $para[$first_key];
+        $get_Db->delete($where_id , $condition);
     }
-    public function put($param){
-        $get_users = new CRUD("clients");
-        $get_users-> update($param,"ID_client",$param['ID_client']);
+    public function put($para,$get_Db){
+        $get_Db-> update($para,"ID_client",$para['ID_client']);
     }
 }
 function Data($res){
@@ -44,14 +40,15 @@ function Data($res){
      return $arr_post['users'];
 }
 function Api($contentType,$method,$params){
-    $get_users = new API();
+    $get_Db = new CRUD("clients");
+    $get_Api = new API();
     $response = [
         'value' => 0,
         'error' => 'All good',
         'data' => null,
     ];
     if($contentType ==='application/json'){
-        $data = $get_users->$method($params);
+        $data = $get_Api->$method($params,$get_Db);
         if($method == "get"){
             $response['data'] = Data($data);
         }
