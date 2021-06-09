@@ -3,6 +3,8 @@ TableContentHeader();
 const url = "http://localhost/CRUD_API/Back_end/api/Api.php";
 
 
+let obj = ""
+///// fatch whene we Want tou GET or SEARCH users
 function fetch_data(url,search=""){
     fetch(`${url+search}` ,{
         method:"GET",
@@ -12,19 +14,24 @@ function fetch_data(url,search=""){
     }).then((response) => {return response.json()})
     .then(
         (res) => {
-            Update__Rows()
-            for(let i = 0 ; i < res.data.length ; i++){
-                TableContentBody(res.data[i]);
-            }
-            Update__user();
-            Delete__user();
-            Add__user();
-            Search__user();
-            change__btn_Add_Update("block","none")
+            obj = res;
+        Update__Rows()
+        TableContentHeader();
+        for(let i = 0 ; i < obj.data.length ; i++){
+            TableContentBody(obj.data[i]);
+        }
+        Search__user();
+        Update__user();
+        Delete__user();
+        Add__user();
+        change__btn_Add_Update("block","none")
+
         })
     .catch((e) => console.log(e))
 }
-function Api__Methode(url , methode,params){
+
+///// fatch whene we Want tou POST or PUT or DELETE users
+function Api__Methode(url,methode,params){
     fetch(url ,{
         method:methode,
         headers: {
@@ -37,9 +44,7 @@ function Api__Methode(url , methode,params){
             console.log(res)
             fetch_data(url)
     })
-    .catch((e) => console.log(e))
 }
-
 fetch_data(url)
 ///// change button betwee  update and add
 const change__btn_Add_Update = (style__1 , style__2) =>{
@@ -48,10 +53,8 @@ const change__btn_Add_Update = (style__1 , style__2) =>{
 }
 //// update rows if we use some methodes like delete or add ....
 const  Update__Rows = () => {
-    let all_row = document.querySelectorAll('.users_row')
-    all_row.forEach(Element => {
-        Element.remove();
-    })
+    let all_row = document.querySelector('table')
+    all_row.remove();
 }
 /// seearch users
 const Search__user = () =>{
@@ -113,10 +116,6 @@ const Update__user = () =>{
         })
     })
 }
-
-
-
-
 
 
 

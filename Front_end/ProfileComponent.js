@@ -1,5 +1,5 @@
 const TableContentHeader = () => {
-    document.querySelector('.table_users').innerHTML = /*html*/
+    document.querySelector('.table_users').innerHTML += /*html*/
         `
         <table>
             <tr>
@@ -19,7 +19,7 @@ const TableContentBody = data => {
                 <td  class="Lname">${data.LastName}</td>
                 <td  class="Total_Prix">${data.TotalPrix}</td>
                 <td  class="Id_Client">${data.IdClient}</td>
-                <td>
+                <td class="action_btns">
                     <button class="read" value='${data.IdClient}'>Read</button>
                     <button class="Update" value='${data.IdClient}' >Update</button>
                     <button class="Delete" value='${data.IdClient}' >Delete</button>

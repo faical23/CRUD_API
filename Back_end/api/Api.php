@@ -1,7 +1,5 @@
 <?php
 include '../db.php';
-/////////// VESRION 3
-
 class API{
     public function get($para,$get_Db){
         $url = parse_url($_SERVER['REQUEST_URI']);
@@ -39,7 +37,7 @@ function Data($res){
     }
      return $arr_post['users'];
 }
-function Api($contentType,$method,$params){
+function Use__Api($contentType,$method,$params){
     $get_Db = new CRUD("clients");
     $get_Api = new API();
     $response = [
@@ -63,6 +61,6 @@ function Api($contentType,$method,$params){
 $method = strtolower($_SERVER["REQUEST_METHOD"]);
 $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
 $params = json_decode(file_get_contents('php://input'),true);
-Api($contentType,$method,$params);
+Use__Api($contentType,$method,$params);
 
 
